@@ -957,6 +957,7 @@ MonoBehaviour:
     damage: 0
     dead: 0
   parachute: {fileID: 1889371425036804569}
+  healthBar: {fileID: 196574179226188039}
   teamMat: 0
 --- !u!114 &11453704
 MonoBehaviour:
@@ -1550,6 +1551,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6125796233672769014, guid: a4d1031875f90c241bf81b7d91a34163,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8008740510933302224, guid: a4d1031875f90c241bf81b7d91a34163,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1584,6 +1590,12 @@ PrefabInstance:
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4d1031875f90c241bf81b7d91a34163, type: 3}
+--- !u!1 &196574179226188039 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5736066031314007579, guid: a4d1031875f90c241bf81b7d91a34163,
+    type: 3}
+  m_PrefabInstance: {fileID: 5557660221963079452}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &196574179226188032 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5736066031314007580, guid: a4d1031875f90c241bf81b7d91a34163,

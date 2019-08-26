@@ -9,6 +9,8 @@ public class newHealth : MonoBehaviour
     public float MaxHP;
     public GameObject Corpse;
 
+    bool zoneExists = false;
+
     Rigidbody rb;
     bool _wait;
 
@@ -64,13 +66,21 @@ public class newHealth : MonoBehaviour
 
     void Update ( )
     {
-        // Getting zone current safe zone values
-        var zonePos = Zone.Instance.CurrentSafeZone.Position;
-        var zoneRadius = Zone.Instance.CurrentSafeZone.Radius;
-        // Checking distance between player and circle
-        var dstToZone = Vector3.Distance (new Vector3 (transform.position.x, zonePos.y, transform.position.z), zonePos);
-        // Checking if we inner of circle or not by radius and if not, start applying damage to health
-        if (dstToZone > zoneRadius && !_wait) StartCoroutine (DoDamageCoroutine( ));
+        if (zoneExists)
+        {
+            // Getting zone current safe zone values
+            var zonePos = Zone.Instance.CurrentSafeZone.Position;
+            var zoneRadius = Zone.Instance.CurrentSafeZone.Radius;
+            // Checking distance between player and circle
+            var dstToZone = Vector3.Distance (new Vector3 (transform.position.x, zonePos.y, transform.position.z), zonePos);
+            // Checking if we inner of circle or not by radius and if not, start applying damage to health
+            if (dstToZone > zoneRadius && !_wait) StartCoroutine (DoDamageCoroutine( ));
+        }
+        else
+        {
+            if (GameObject.Find("ZonePrefab"))
+                zoneExists = true;
+        }
     }
 
     // Method for waiting time between applying damage

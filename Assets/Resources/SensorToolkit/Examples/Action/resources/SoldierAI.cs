@@ -11,7 +11,8 @@ namespace SensorToolkit.Example
         public Sensor InteractionRange;
         public SteeringRig SteerSensor;
         public WaypointManager wpm;
-        public GameObject dest;
+        public GameObject dest = null;
+        float destVal;
 
         CharacterControls movement;
         GunWithClip gun;
@@ -121,9 +122,14 @@ namespace SensorToolkit.Example
             while (countdown > 0f)
             {
                 // Make way to the current destination
+                if (dest == null)
+                {
+                    dest = NewDest();
+                }
+                
                 if (Vector3.Distance(transform.position, dest.transform.position) <= 3)
                 {
-                    NewDest();
+                    dest = NewDest();
                 }
                 
                 var targetDirection = SteerSensor.GetSteeredDirection(dest.transform.position - transform.position).normalized;
@@ -266,9 +272,11 @@ namespace SensorToolkit.Example
             goto Start;
         }
 
-        void NewDest()
+        GameObject NewDest()
         {
-
+            wp temp = wpm.NextDest(destVal);
+            destVal = temp.value;
+            return temp.waypoint;
         }
     }
 }

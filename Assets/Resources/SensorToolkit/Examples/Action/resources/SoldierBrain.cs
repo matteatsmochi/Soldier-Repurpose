@@ -8,6 +8,7 @@ public class SoldierBrain : MonoBehaviour
     
     public playerStats stats;
     public GameObject parachute;
+    public GameObject healthBar;
     public int teamMat;
 
     bool falling = true;
@@ -53,7 +54,6 @@ public class SoldierBrain : MonoBehaviour
         {
             if (stuck == transform.position)
             {
-                Debug.Log("Stuck: " + stuck + " & Pos: " + transform.position);
                 DropPlayer();
             }
             stuck = transform.position;
@@ -88,9 +88,6 @@ public class SoldierBrain : MonoBehaviour
             }
         }
 
-        
-
-        Debug.Log(killerUsername + " killed " + myUsername);
         killfeed.SpawnKillfeedItem(killerUsername, myUsername);
         playerManager.PlayerDied();
     }

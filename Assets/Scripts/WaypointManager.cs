@@ -24,31 +24,18 @@ public class WaypointManager : MonoBehaviour
         }
     }
 
-    public GameObject NextDest(GameObject current)
+    public wp NextDest(float curVal)
     {
-        GameObject nextDest = current;
-        GameObject nextBest = current;
-        float score = nextDest.GetComponent<WaypointValue>().Val(zoneCenter);
+        wp temp = new wp();
         
-        for (int i = 0; i < waypoints.Count; i++)
+        
+        int rnd = Random.Range(0, waypoints.Count);
+        if (waypoints[rnd] && waypoints[rnd].GetComponent<WaypointValue>().Val(zoneCenter) > curVal)
         {
-            if (waypoints[i])
-            {
-                float s = waypoints[i].GetComponent<WaypointValue>().Val(zoneCenter);
-                if (s > score)
-                {
-                    nextBest = nextDest;
-                    nextDest = waypoints[i];
-                    score = s;
-                }
-            }
+            temp.waypoint = waypoints[rnd];
+            temp.value = waypoints[rnd].GetComponent<WaypointValue>().Val(zoneCenter);
         }
-
-        if (current.transform.position == nextDest.transform.position)
-        {
-            nextDest = nextBest;
-        }
-
-        return nextDest;
+        
+        return temp;
     }
 }

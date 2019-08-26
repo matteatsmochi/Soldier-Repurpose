@@ -8,6 +8,8 @@ public class healthBar : MonoBehaviour
     
     public Image back, left, center, right;
     public Sprite r1, r2, r3, y1, y2, y3, g1, g2, g3, b1, b2, b3;
+    public TMPro.TextMeshProUGUI usernameText;
+    public string username;
     public GameObject character;
     Vector3 removed;
     newHealth health;
@@ -40,10 +42,12 @@ public class healthBar : MonoBehaviour
             right.gameObject.SetActive(true);
             left.gameObject.SetActive(true);
             center.gameObject.SetActive(true);
+            usernameText.gameObject.SetActive(true);
             back.DOFade(0.25f, 0.5f);
             right.DOFade(1, 0.5f);
             left.DOFade(1, 0.5f);
             center.DOFade(1, 0.5f);
+            usernameText.text = username;
         }
         else
         {
@@ -105,5 +109,7 @@ public class healthBar : MonoBehaviour
 
         previousStamina = currentStamnia;
     }
+
+    
 
 }
