@@ -32,6 +32,7 @@ public class PlayersList : MonoBehaviour
         joinedPlayers.Add("Melle");
         joinedPlayers.Add("Rene");
         joinedPlayers.Add("Evie");
+        Shuffle();
     }
 
     

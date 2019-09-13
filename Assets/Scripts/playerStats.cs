@@ -11,7 +11,7 @@ public class playerStats
     public GameObject soldier;
     
     public int kills = 0;
-    public float damage = 0;
+    public float score = 100;
     public bool dead = false;
 
 }

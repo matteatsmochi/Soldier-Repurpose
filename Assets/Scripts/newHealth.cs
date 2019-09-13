@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SensorToolkit.Example;
-using CoolBattleRoyaleZone;
 
 public class newHealth : MonoBehaviour
 {
     public float MaxHP;
     public GameObject Corpse;
 
-    bool zoneExists = false;
+    public playerZoneInfo pzi;
 
     Rigidbody rb;
     bool _wait;
@@ -53,41 +52,38 @@ public class newHealth : MonoBehaviour
     public void ZoneDamage(float amount)
     {
         if (amount > HP)
-            Impact(amount, (Zone.Instance.ZoneCircles[Zone.Instance.CurStep].PositionAndRadius.Position - transform.position) * 10, transform.position, -1);
+            Impact(amount, (pzi.PositionB - transform.position) * 10, transform.position, -1);
         else
             Impact(amount, Vector3.zero, Vector3.zero, -1);
     }
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        pzi = GameObject.Find("Player Manager").GetComponent<playerZoneInfo>();
+    }
+    
+    void Start()
+    {
         HP = MaxHP;
     }
 
     void Update ( )
     {
-        if (zoneExists)
-        {
             // Getting zone current safe zone values
-            var zonePos = Zone.Instance.CurrentSafeZone.Position;
-            var zoneRadius = Zone.Instance.CurrentSafeZone.Radius;
+            var zonePos = pzi.PositionB;
+            var zoneRadius = pzi.RadiusB;
             // Checking distance between player and circle
             var dstToZone = Vector3.Distance (new Vector3 (transform.position.x, zonePos.y, transform.position.z), zonePos);
             // Checking if we inner of circle or not by radius and if not, start applying damage to health
             if (dstToZone > zoneRadius && !_wait) StartCoroutine (DoDamageCoroutine( ));
-        }
-        else
-        {
-            if (GameObject.Find("ZonePrefab"))
-                zoneExists = true;
-        }
     }
 
     // Method for waiting time between applying damage
     private IEnumerator DoDamageCoroutine()
     {
         _wait = true;
-        ZoneDamage(Zone.Instance.CurStep + 1);
+        ZoneDamage(pzi.CurStepB + 1);
         yield return new WaitForSeconds (1); // Waiting between damages.
         _wait = false;
     }

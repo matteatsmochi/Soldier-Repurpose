@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using SensorToolkit.Example;
 
 public class healthBar : MonoBehaviour
 {
@@ -24,19 +23,19 @@ public class healthBar : MonoBehaviour
         character = p;
         GameObject canvas = GameObject.Find("Canvas");
         gameObject.transform.SetParent(canvas.transform, false);
-        firstFrame = 0;
+        
     }
     
     void Start()
     {
         //assign components
         health = character.GetComponent<newHealth>();
-
+        firstFrame = 0;
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        if (firstFrame > 0)
+        if (firstFrame == 1)
         {
             back.gameObject.SetActive(true);
             right.gameObject.SetActive(true);
@@ -48,8 +47,9 @@ public class healthBar : MonoBehaviour
             left.DOFade(1, 0.5f);
             center.DOFade(1, 0.5f);
             usernameText.text = username;
+            firstFrame = 2;
         }
-        else
+        else if (firstFrame == 0)
         {
             back.DOFade(0, 0);
             right.DOFade(0, 0);

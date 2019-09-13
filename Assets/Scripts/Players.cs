@@ -12,17 +12,45 @@ public class Players : MonoBehaviour
         AlivePlayers--;
         if (AlivePlayers == 1)
         {
+            string winner = "";
             for (int i = 0; i < players.Count; i++)
             {
-                string winner = "";
                 if (!players[i].dead)
                 {
                     winner = players[i].username;
                 }
-
-                Debug.Log(winner + " is the Winner");
             }
+            Debug.Log(winner + " is the Winner");
         }
+    }
+
+    public GameObject HighestScore()
+    {
+        GameObject n = new GameObject();
+        float s = 0;
+        for (int i = 0; i < players.Count; i++)
+            {
+                if (players[i].score > s)
+                {
+                    n = players[i].soldier;
+                    s = players[i].score;
+                }
+            }
+        return n;
+    }
+
+    public GameObject soldierObject(int index)
+    {
+        GameObject n = new GameObject();
+        for (int i = 0; i < players.Count; i++)
+            {
+                if (players[i].index == index)
+                {
+                    n = players[i].soldier;
+                }
+            }
+
+        return n;
     }
     
 }

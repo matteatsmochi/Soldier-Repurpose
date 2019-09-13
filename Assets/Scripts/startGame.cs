@@ -12,9 +12,12 @@ public class startGame : MonoBehaviour
     public GameObject planePrefab;
 
     public List<GameObject> planeStart;
+
+    public cameraController cc;
     
 
     bool AllSpawned = false;
+    bool NotTwice = true;
     public List<GameObject> planes;
     
     void Awake()
@@ -25,13 +28,13 @@ public class startGame : MonoBehaviour
     
     void Start()
     {
-        NewPlane();
+        StartCoroutine(StartGame());
     }
     
-    void StartGame()
+    IEnumerator StartGame()
     {
-        
-
+        yield return new WaitForSeconds(5);
+        NewPlane();
     }
 
     void NewPlane()
@@ -47,6 +50,11 @@ public class startGame : MonoBehaviour
         GameObject plane = Instantiate(planePrefab, tp.point1.transform.position, Quaternion.identity);
         planes.Add(plane);
         plane.GetComponent<planeFly>().Setup(tp.point2.transform);
+        if (cc.plane == null)
+        {
+            cc.plane = plane;
+        }
+            
         
         yield return new WaitForSeconds(10);
         
@@ -75,9 +83,14 @@ public class startGame : MonoBehaviour
             }
         }
 
-        if (AllSpawned)
+        if (AllSpawned & NotTwice)
         {
-            GameObject.Find("ZoneOn").GetComponent<zoneOn>().child.SetActive(true);
+            zoneOn ZoneOn = GameObject.Find("ZoneOn").GetComponent<zoneOn>();
+            ZoneOn.child.SetActive(true);
+            ZoneOn.CurViz.SetActive(true);
+            ZoneOn.NextViz.SetActive(true);
+            ZoneOn.on = true;
+            NotTwice = false;
         }
     }
 
