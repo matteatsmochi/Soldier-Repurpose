@@ -110,6 +110,9 @@ public class healthBar : MonoBehaviour
         previousStamina = currentStamnia;
     }
 
-    
+    public float getHealth()
+    {
+        return health.HP;
+    }
 
 }

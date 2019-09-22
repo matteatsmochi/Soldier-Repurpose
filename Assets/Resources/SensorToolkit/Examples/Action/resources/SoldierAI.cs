@@ -8,6 +8,7 @@ namespace SensorToolkit.Example
     public class SoldierAI : MonoBehaviour
     {
         public Sensor Sight;
+        public float Surrounded;
         public Sensor InteractionRange;
         public SteeringRig SteerSensor;
         public WaypointManager wpm;
@@ -27,6 +28,7 @@ namespace SensorToolkit.Example
             wpm = GameObject.Find("Waypoints").GetComponent<WaypointManager>();
             inactive = 2;
             StartCoroutine(DefaultState());
+            StartCoroutine(updateSurrounded());
         }
 
         void Update()
@@ -278,5 +280,19 @@ namespace SensorToolkit.Example
             destVal = temp.value;
             return temp.waypoint;
         }
+
+        public float getSurrounded()
+        {
+            return Surrounded;
+        }
+
+        IEnumerator updateSurrounded()
+        {
+            yield return new WaitForSeconds(1);
+            Surrounded = Sight.GetDetected().Count;
+            StartCoroutine(updateSurrounded());
+        }
+
+
     }
 }

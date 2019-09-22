@@ -6,6 +6,7 @@ using UnityEngine;
 public class playerStats
 {
     public string username = "";
+    public string userID = "";
     public int index;
 
     public GameObject soldier;

@@ -37,7 +37,8 @@ public class playerSpawner : MonoBehaviour
             if (playersList.joinedPlayers.Count > 0)
             {
                 playerStats stats = new playerStats();
-                stats.username = playersList.joinedPlayers[0];
+                stats.username = ParseUsername(playersList.joinedPlayers[0]);
+                stats.userID = ParseUserID(playersList.joinedPlayers[0]);
                 playersList.joinedPlayers.RemoveAt(0);
                 
                 GameObject soldier = Instantiate(playerPrefab, transform);
@@ -50,9 +51,10 @@ public class playerSpawner : MonoBehaviour
 
                 SoldierBrain brain = soldier.GetComponent<SoldierBrain>();
                 brain.stats.username = stats.username;
+                brain.stats.userID = stats.userID;
                 brain.stats.index = stats.index;
                 brain.stats.soldier = soldier;
-                brain.healthBar.GetComponent<healthBar>().username = stats.username;
+                brain.healthBar.username = stats.username;
             }
         }
         else if (seeGround)
@@ -72,6 +74,18 @@ public class playerSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(Random.Range(1,3));
         SpawnPlayer();
+    }
+
+    string ParseUsername(string full)
+    {
+        int split = full.IndexOf("::");
+        return full.Substring(0, split);
+    }
+
+string ParseUserID(string full)
+    {
+        int split = full.IndexOf("::");
+        return full.Substring(split + 2, full.Length - split - 2);
     }
 
     

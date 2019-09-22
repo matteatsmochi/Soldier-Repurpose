@@ -6,23 +6,22 @@ using CoolBattleRoyaleZone;
 public class throwaway : MonoBehaviour
 {
     
-    public Zone zone;
-    
     void Start()
     {
-        StartCoroutine(DelayedStart());
+        Debug.Log(ParseUserID("matteatsmochi::12345"));
         
     }
 
-    IEnumerator DelayedStart()
+    string ParseUsername(string full)
     {
-        yield return new WaitForSeconds(3);
-        for (int i = 0; i < zone.ZoneCircles.Count; i++)
-        {
-            Debug.Log(zone.ZoneCircles[i].PositionAndRadius.Position);
-        }
-        transform.position = zone.ZoneCircles[7].PositionAndRadius.Position;
+        int split = full.IndexOf("::");
+        return full.Substring(0, split);
     }
 
+    string ParseUserID(string full)
+    {
+        int split = full.IndexOf("::");
+        return full.Substring(split + 2, full.Length - split - 2);
+    }
 
 }

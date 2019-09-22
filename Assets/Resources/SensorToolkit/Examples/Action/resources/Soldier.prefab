@@ -951,13 +951,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     username: 
+    userID: 
     index: 0
     soldier: {fileID: 0}
     kills: 0
-    damage: 0
+    score: 100
     dead: 0
   parachute: {fileID: 1889371425036804569}
-  healthBar: {fileID: 196574179226188039}
+  healthBar: {fileID: 196574179226188033}
   teamMat: 0
 --- !u!114 &11453704
 MonoBehaviour:
@@ -976,6 +977,8 @@ MonoBehaviour:
   ReloadTime: 5
   Nozzle: {fileID: 140326}
   Bullet: {fileID: 180842, guid: 8567a1cf1f7f3594f8bff8814a4488c5, type: 3}
+  bulletSFX: {fileID: 5331359146611505176, guid: e335a19f9e44caa40bf828948167f5e2,
+    type: 3}
   FireEffect: {fileID: 153588, guid: 5f780804588f7c145a1f0fc179ba5caa, type: 3}
 --- !u!114 &11415648
 MonoBehaviour:
@@ -1039,6 +1042,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHP: 100
   Corpse: {fileID: 144548, guid: 7e4203f29f125c945a4ab9560bb0de6e, type: 3}
+  pzi: {fileID: 0}
 --- !u!114 &11440574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1590,18 +1594,24 @@ PrefabInstance:
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4d1031875f90c241bf81b7d91a34163, type: 3}
---- !u!1 &196574179226188039 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5736066031314007579, guid: a4d1031875f90c241bf81b7d91a34163,
-    type: 3}
-  m_PrefabInstance: {fileID: 5557660221963079452}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &196574179226188032 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5736066031314007580, guid: a4d1031875f90c241bf81b7d91a34163,
     type: 3}
   m_PrefabInstance: {fileID: 5557660221963079452}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &196574179226188033 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5736066031314007581, guid: a4d1031875f90c241bf81b7d91a34163,
+    type: 3}
+  m_PrefabInstance: {fileID: 5557660221963079452}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cc990668db087d48bdbbf994e543478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7573234170946189520
 PrefabInstance:
   m_ObjectHideFlags: 0

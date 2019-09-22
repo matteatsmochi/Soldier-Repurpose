@@ -46,7 +46,14 @@ public class startGame : MonoBehaviour
 
     IEnumerator SpawnPlane()
     {
+    Repeat:
         TwoPoints tp = GetPoints();
+        Debug.Log(Vector3.Distance(tp.point1.transform.position, tp.point2.transform.position));
+        if (Vector3.Distance(tp.point1.transform.position, tp.point2.transform.position) < 400)
+        {
+            goto Repeat;
+        }
+        
         GameObject plane = Instantiate(planePrefab, tp.point1.transform.position, Quaternion.identity);
         planes.Add(plane);
         plane.GetComponent<planeFly>().Setup(tp.point2.transform);

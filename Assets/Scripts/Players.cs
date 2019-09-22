@@ -6,10 +6,14 @@ public class Players : MonoBehaviour
 {
     public int AlivePlayers = 8;
     public List<playerStats> players;
+
     
     public void PlayerDied()
     {
         AlivePlayers--;
+        
+        //if player that died is being spectated, look at who killed them
+
         if (AlivePlayers == 1)
         {
             string winner = "";
@@ -21,6 +25,7 @@ public class Players : MonoBehaviour
                 }
             }
             Debug.Log(winner + " is the Winner");
+            //winner animation
         }
     }
 

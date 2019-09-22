@@ -9,6 +9,7 @@ namespace SensorToolkit.Example {
         public float ReloadTime;
         public GameObject Nozzle;
         public GameObject Bullet;
+        public GameObject bulletSFX;
         public GameObject FireEffect;
 
         SoldierBrain brain; 
@@ -25,6 +26,7 @@ namespace SensorToolkit.Example {
             if (IsReady && !IsEmptyClip)
             {
                 var bullet = Instantiate(Bullet, Nozzle.transform.position, Nozzle.transform.rotation) as GameObject;
+                Instantiate(bulletSFX, Nozzle.transform.position, Nozzle.transform.rotation);
                 bullet.GetComponent<RaySensor>().IgnoreList = new GameObject[] { gameObject };
                 bullet.GetComponent<Bullet>().fromIndex = brain.stats.index;
                 var effect = Instantiate(FireEffect, Nozzle.transform.position, Nozzle.transform.rotation) as GameObject;

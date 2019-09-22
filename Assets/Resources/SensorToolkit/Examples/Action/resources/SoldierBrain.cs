@@ -7,8 +7,11 @@ public class SoldierBrain : MonoBehaviour
 {
     
     public playerStats stats;
+    int previousKills = 0;
+    float onFire = 0;
+    bool onFireBool = false;
     public GameObject parachute;
-    public GameObject healthBar;
+    public healthBar healthBar;
     public int teamMat;
 
     bool falling = true;
@@ -26,6 +29,7 @@ public class SoldierBrain : MonoBehaviour
         GetComponent<TeamMember>().matIndex = teamMat;
         rb = GetComponent<Rigidbody>();
         ai = GetComponent<SoldierAI>();
+
         playerManager = GameObject.Find("Player Manager").GetComponent<Players>();
         killfeed = GameObject.Find("Killfeed").GetComponent<Killfeed>();
     }
@@ -45,7 +49,27 @@ public class SoldierBrain : MonoBehaviour
                 DropPlayer();
             }
         }
-        
+
+        if (previousKills < stats.kills)
+        {
+            onFireBool = true;
+            onFire = 10;
+            previousKills = stats.kills;
+        }
+
+        if (onFire > 0)
+        {
+            onFire -= Time.deltaTime;
+        }
+        else
+        {
+            onFireBool = false;
+        }
+
+
+        //stats.score = (ai.getSurrounded() / Mathf.Clamp(playerManager.AlivePlayers, 1, 10) + (onFire * 1)) + (stats.kills * 1f);
+        stats.score = (ai.getSurrounded() * 1f) + (onFire * 1f) + (stats.kills * 1f);
+        playerManager.players[stats.index].score = stats.score;
     }
 
     void FixedUpdate()

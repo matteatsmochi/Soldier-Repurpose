@@ -13,6 +13,8 @@ using TwitchLib.PubSub;
 
 public class TwitchAPI : MonoBehaviour
 {
+    static TwitchAPI Instance;
+
     Client client;
     TwitchPubSub pubsub;
 
@@ -20,6 +22,16 @@ public class TwitchAPI : MonoBehaviour
 
     void Start()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+        }
+
         Application.runInBackground = true;
 
         client = new Client();
@@ -27,11 +39,6 @@ public class TwitchAPI : MonoBehaviour
 
     }
 
-    
-    void Update()
-    {
-        
-    }
 
     public void AssignChannel(string c)
     {
@@ -45,7 +52,7 @@ public class TwitchAPI : MonoBehaviour
     {
         if (Channel != "" || Channel != null)
         {
-            ConnectionCredentials credentials = new ConnectionCredentials("QQTs", "nggcga65y6mc6oorhhnrjeq75en1qi"); //change to my bot with permissions
+            ConnectionCredentials credentials = new ConnectionCredentials("chatroyalebot", "4gtxvf2ngeivqbvfrauvbv133ckot0");
             client.Initialize(credentials, Channel);
 
             client.OnConnected += onConnected;
@@ -99,7 +106,9 @@ public class TwitchAPI : MonoBehaviour
 
         if (MESSAGE.StartsWith("!join"))
         {
-            
+            //bubble
+
+            //add username and userID to string
 
         }
 
