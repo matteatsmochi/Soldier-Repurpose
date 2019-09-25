@@ -89,7 +89,7 @@ public class SoldierBrainMenu : MonoBehaviour
         }
 
         killfeed.SpawnKillfeedItem(killerUsername, myUsername);
-        playerManager.PlayerDied();
+        playerManager.PlayerDied(stats.index, fromIndex);
     }
 
 

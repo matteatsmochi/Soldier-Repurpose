@@ -8,7 +8,7 @@ public class throwaway : MonoBehaviour
     
     void Start()
     {
-        Debug.Log(ParseUserID("matteatsmochi::12345"));
+        //Debug.Log(ParseUserID("matteatsmochi::12345"));
         
     }
 

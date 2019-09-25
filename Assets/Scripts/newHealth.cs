@@ -13,54 +13,58 @@ public class newHealth : MonoBehaviour
     Rigidbody rb;
     bool _wait;
 
+    public SoldierBrain b;
+
     public float HP { get; private set; }
 
     public void Impact(float amount, Vector3 impactForce, Vector3 impactPoint, int index)
     {
-        HP -= amount;
-        if (HP <= 0f)
+        if (!b.getGameOver())
         {
-            var corpse = Instantiate(Corpse, transform.position, transform.rotation) as GameObject;
-            corpse.transform.SetParent(transform.parent);
-
-            var myTeam = GetComponent<TeamMember>();
-            if (myTeam)
+            HP -= amount;
+            if (HP <= 0f)
             {
-                var corpseTeam = corpse.GetComponent<TeamMember>();
-                corpseTeam.matIndex = GetComponent<SoldierBrain>().teamMat;
-                //if (myTeam != null && corpseTeam != null) corpseTeam.StartTeam = myTeam.Team;
+                var corpse = Instantiate(Corpse, transform.position, transform.rotation) as GameObject;
+                corpse.transform.SetParent(transform.parent);
 
-                var corpseRBs = corpse.GetComponentsInChildren<Rigidbody>();
-                for (int i = 0; i < corpseRBs.Length; i++)
+                var myTeam = GetComponent<TeamMember>();
+                if (myTeam)
                 {
-                    corpseRBs[i].AddForceAtPosition(impactForce, impactPoint);
-                }
-            }
-            
-            SoldierBrain b = GetComponent<SoldierBrain>();
-            if (b)
-                b.ImDead(index);
+                    var corpseTeam = corpse.GetComponent<TeamMember>();
+                    corpseTeam.matIndex = GetComponent<SoldierBrain>().teamMat;
+                    //if (myTeam != null && corpseTeam != null) corpseTeam.StartTeam = myTeam.Team;
 
-            Destroy(gameObject);
-        }
-        else if (rb != null)
-        {
-            rb.AddForceAtPosition(impactForce, impactPoint);
+                    var corpseRBs = corpse.GetComponentsInChildren<Rigidbody>();
+                    for (int i = 0; i < corpseRBs.Length; i++)
+                    {
+                        corpseRBs[i].AddForceAtPosition(impactForce, impactPoint);
+                    }
+                }
+
+                    b.ImDead(index);
+
+                Destroy(gameObject);
+            }
+            else if (rb != null)
+            {
+                rb.AddForceAtPosition(impactForce, impactPoint);
+            }
         }
     }
 
     public void ZoneDamage(float amount)
     {
         if (amount > HP)
-            Impact(amount, (pzi.PositionB - transform.position) * 10, transform.position, -1);
+            Impact(amount, (pzi.PositionB - transform.position) * 10, transform.position, 101);
         else
-            Impact(amount, Vector3.zero, Vector3.zero, -1);
+            Impact(amount, Vector3.zero, Vector3.zero, 101);
     }
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         pzi = GameObject.Find("Player Manager").GetComponent<playerZoneInfo>();
+        b = GetComponent<SoldierBrain>();
     }
     
     void Start()

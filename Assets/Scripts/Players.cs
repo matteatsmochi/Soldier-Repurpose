@@ -4,40 +4,62 @@ using UnityEngine;
 
 public class Players : MonoBehaviour
 {
-    public int AlivePlayers = 8;
+    public int AlivePlayers = 0;
     public List<playerStats> players;
 
+    public cameraController cam;
+    public HUDConroller hud;
+
+    public AlivePlayerCount aliveCount;
+    public bool GameOver = false;
+
+    void Awake()
+    {
+        
+    }
+
     
-    public void PlayerDied()
+    public void PlayerDied(int deadIndex, int killerIndex)
     {
         AlivePlayers--;
-        
-        //if player that died is being spectated, look at who killed them
+        aliveCount.SetPlayerCount(AlivePlayers.ToString());
+
+        cam.PlayerDiedCheckCurrent(deadIndex, killerIndex);
+        if (killerIndex < 101)
+        {
+            hud.NewKill(killerIndex, players[killerIndex].kills);
+        }
+
+        players[deadIndex].score = -100;
+
 
         if (AlivePlayers == 1)
         {
-            string winner = "";
+            int lastAlive = 0;
             for (int i = 0; i < players.Count; i++)
             {
                 if (!players[i].dead)
-                {
-                    winner = players[i].username;
-                }
+                    lastAlive = i;
             }
-            Debug.Log(winner + " is the Winner");
+
+            Debug.Log(players[lastAlive].username + " is the Winner");
+            cam.ForceChangeFocus(players[lastAlive].soldier, players[lastAlive].username, players[lastAlive].userID, players[lastAlive].index);
+            GameOver = true;
             //winner animation
+
+            StartCoroutine(BackToMenu());
         }
     }
 
-    public GameObject HighestScore()
+    public int HighestScore()
     {
-        GameObject n = new GameObject();
-        float s = 0;
+        int n = 0;
+        float s = -1;
         for (int i = 0; i < players.Count; i++)
             {
                 if (players[i].score > s)
                 {
-                    n = players[i].soldier;
+                    n = players[i].index;
                     s = players[i].score;
                 }
             }
@@ -56,6 +78,12 @@ public class Players : MonoBehaviour
             }
 
         return n;
+    }
+
+    IEnumerator BackToMenu()
+    {
+        yield return new WaitForSeconds(5);
+        GameObject.Find("SceneManager").GetComponent<sceneManager>().LoadS(0);
     }
     
 }

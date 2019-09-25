@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Killfeed : MonoBehaviour
 {
     public GameObject killfeedPrefab;
-
+    
     public void SpawnKillfeedItem(string killer, string killed)
     {
         GameObject k = Instantiate(killfeedPrefab, this.transform);

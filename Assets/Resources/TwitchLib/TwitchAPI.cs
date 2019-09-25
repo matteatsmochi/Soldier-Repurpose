@@ -20,6 +20,8 @@ public class TwitchAPI : MonoBehaviour
 
     public string Channel;
 
+    public menuManager menu;
+
     void Start()
     {
         if (Instance != null)
@@ -42,7 +44,7 @@ public class TwitchAPI : MonoBehaviour
 
     public void AssignChannel(string c)
     {
-        Channel = c;
+        Channel = c.ToLower();
     }
 
 
@@ -57,8 +59,6 @@ public class TwitchAPI : MonoBehaviour
 
             client.OnConnected += onConnected;
             client.OnMessageReceived += globalChatMessageRecieved;
-            client.OnWhisperReceived += onWhisperReceived;
-            client.OnNewSubscriber += onNewSubscriber;
             client.OnDisconnected += onDisconnected;
 
             if (!client.IsConnected)
@@ -67,10 +67,6 @@ public class TwitchAPI : MonoBehaviour
             }
 
             Debug.Log("<< Connecting >>");
-
-            pubsub.OnPubSubServiceConnected += Pubsub_OnPubSubServiceConnected;
-            pubsub.OnListenResponse += Pubsub_OnListenResponse;
-            pubsub.OnBitsReceived += Pubsub_OnBitsReceived;
 
             pubsub.Connect();
         }
@@ -106,13 +102,10 @@ public class TwitchAPI : MonoBehaviour
 
         if (MESSAGE.StartsWith("!join"))
         {
-            //bubble
-
-            //add username and userID to string
-
+            
+            menu.AddPlayer(e.ChatMessage.DisplayName, e.ChatMessage.UserId);
         }
 
-        
     }
 
     void onWhisperReceived(object sender, OnWhisperReceivedArgs e)
@@ -123,10 +116,10 @@ public class TwitchAPI : MonoBehaviour
 
     void onNewSubscriber(object sender, OnNewSubscriberArgs e)
     {
-        if (e.Subscriber.SubscriptionPlan == SubscriptionPlan.Prime)
-            client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} So kind of you to use your Twitch Prime on this channel!");
-        else
-            client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers!");
+        //if (e.Subscriber.SubscriptionPlan == SubscriptionPlan.Prime)
+        //    client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} So kind of you to use your Twitch Prime on this channel!");
+        //else
+        //    client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers!");
     }
 
     #region "PubSub"
@@ -153,5 +146,6 @@ public class TwitchAPI : MonoBehaviour
 
     #endregion
 
+    
     
 }

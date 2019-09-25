@@ -48,7 +48,6 @@ public class startGame : MonoBehaviour
     {
     Repeat:
         TwoPoints tp = GetPoints();
-        Debug.Log(Vector3.Distance(tp.point1.transform.position, tp.point2.transform.position));
         if (Vector3.Distance(tp.point1.transform.position, tp.point2.transform.position) < 400)
         {
             goto Repeat;

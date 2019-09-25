@@ -10,8 +10,12 @@ public class HUDConroller : MonoBehaviour
 {
     RectTransform rect;
 
-    public RawImage thisImage;
+    public RawImage rawImage;
+    public Image botImage;
+    public Sprite botSprite;
     public TextMeshProUGUI hudUser;
+    public TextMeshProUGUI hudKills;
+    public healthBar health;
 
     string v5oauth = "4gtxvf2ngeivqbvfrauvbv133ckot0";
 
@@ -23,37 +27,55 @@ public class HUDConroller : MonoBehaviour
         HUDOff();
     }
 
-    public void NewPlayerHUG(string username, string userID, int index)
+    public void NewPlayerHUD(string username, string userID, int kills, int index)
     {
-        HUDOff();
-        StartCoroutine(NewPlayerTime(username, userID));
-        currentPlayerIndex = index;
+        if (currentPlayerIndex != index)
+        {
+            HUDOff();
+            StartCoroutine(NewPlayerTime(username, userID, kills));
+            currentPlayerIndex = index;
+        }
+
     }
 
     
     void HUDOn()
     {
-        rect.DOMoveX(640, 2f);
+        rect.DOMoveX(640, 1f);
     }
 
     void HUDOff()
     {
-        rect.DOMoveX(0, 1f);
+        rect.DOMoveX(0, 0.4f);
     }
 
-    IEnumerator NewPlayerTime(string username, string userID)
+    IEnumerator NewPlayerTime(string username, string userID, int kills)
     {
         yield return new WaitForSeconds(1);
-        SetPlayer(username, userID);
+        SetPlayer(username, userID, kills);
         HUDOn();
     }
 
 
 
-    void SetPlayer(string username, string userID)
+    void SetPlayer(string username, string userID, int kills)
     {
         hudUser.text = username;
-        StartCoroutine(GetRequest("https://api.twitch.tv/kraken/users/" + userID + "?api_version=5&oauth_token=" + v5oauth));
+        hudKills.text = "Kills: " + kills;
+
+        if (float.Parse(userID) == 0)
+        {
+            botImage.gameObject.SetActive(true);
+            rawImage.gameObject.SetActive(false);
+            botImage.sprite = botSprite;
+        }
+        else
+        {
+            rawImage.gameObject.SetActive(true);
+            botImage.gameObject.SetActive(false);
+            StartCoroutine(GetRequest("https://api.twitch.tv/kraken/users/" + userID + "?api_version=5&oauth_token=" + v5oauth));
+        }
+        
     }
 
     IEnumerator GetRequest(string uri)
@@ -71,7 +93,6 @@ public class HUDConroller : MonoBehaviour
             }
             else
             {
-                Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
                 ParseHTML(webRequest.downloadHandler.text);
             }
         }
@@ -95,8 +116,6 @@ public class HUDConroller : MonoBehaviour
 
     IEnumerator LoadFromURL(string url)
     {
-        Debug.Log("Loading...");
-        Debug.Log(url);
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
         yield return www.SendWebRequest();
 
@@ -104,9 +123,16 @@ public class HUDConroller : MonoBehaviour
             Debug.Log(www.error);
         }
         else {
-            Debug.Log("Loaded!");
             Texture myTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
-            thisImage.texture = myTexture;
+            rawImage.texture = myTexture;
+        }
+    }
+
+    public void NewKill(int killerIndex, int kills)
+    {
+        if (killerIndex == currentPlayerIndex)
+        {
+            hudKills.text = "Kills: " + kills;
         }
     }
 }

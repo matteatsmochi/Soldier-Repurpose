@@ -6,33 +6,20 @@ public class PlayersList : MonoBehaviour
 {
     
     public List<string> joinedPlayers;
+    twitchPlayerList tpl;
+
+    void Awake()
+    {
+        tpl = GameObject.Find("Twitch API").GetComponent<twitchPlayerList>();
+    }
 
     void Start()
     {
-        joinedPlayers.Add("Cua::12345");
-        joinedPlayers.Add("Izabela::12345");
-        joinedPlayers.Add("Linda::12345");
-        joinedPlayers.Add("Zora::12345");
-        joinedPlayers.Add("Yahweh::12345");
-        joinedPlayers.Add("Jozsef::12345");
-        joinedPlayers.Add("Fergus::12345");
-        joinedPlayers.Add("Kamil::12345");
-        joinedPlayers.Add("Irene::12345");
-        joinedPlayers.Add("Dovydas::12345");
-        joinedPlayers.Add("Borja::12345");
-        joinedPlayers.Add("Semyon::12345");
-        joinedPlayers.Add("Alekto::12345");
-        joinedPlayers.Add("Barnabas::12345");
-        joinedPlayers.Add("Agar::12345");
-        joinedPlayers.Add("Brygida::12345");
-        joinedPlayers.Add("Ioanna::12345");
-        joinedPlayers.Add("Finnagan::12345");
-        joinedPlayers.Add("Carles::12345");
-        joinedPlayers.Add("Helga::12345");
-        joinedPlayers.Add("Kallistos::12345");
-        joinedPlayers.Add("Melle::12345");
-        joinedPlayers.Add("Rene::12345");
-        joinedPlayers.Add("Evie::12345");
+        for (int i = 0; i < tpl.twitchPlayers.Count; i++)
+        {
+            joinedPlayers.Add(tpl.twitchPlayers[i]);
+        }
+
         Shuffle();
     }
 

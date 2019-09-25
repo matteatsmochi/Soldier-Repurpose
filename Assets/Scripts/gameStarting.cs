@@ -25,6 +25,8 @@ public class gameStarting : MonoBehaviour
     IEnumerator KillMe()
     {
         yield return new WaitForSeconds(20);
+        transform.transform.DOScale(0, 1f);
+        yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }
 

@@ -31,6 +31,7 @@ public class waypointHealth : MonoBehaviour
             // Checking distance between player and circle
             var dstToZone = Vector3.Distance (new Vector3 (transform.position.x, p.y, transform.position.z), p);
             // Checking if we inner of circle or not by radius and if not, start applying damage to health
+            //if (dstToZone > r) gameObject.GetComponent<WaypointValue>().destroyed = true;
             if (dstToZone > r) Destroy(gameObject);
         }
     }

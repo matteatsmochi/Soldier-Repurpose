@@ -21,7 +21,7 @@ public class healthBar : MonoBehaviour
     {
         GameObject p = gameObject.transform.parent.gameObject;
         character = p;
-        GameObject canvas = GameObject.Find("Canvas");
+        GameObject canvas = GameObject.Find("HealthBarCanvas");
         gameObject.transform.SetParent(canvas.transform, false);
         
     }

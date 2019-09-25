@@ -113,10 +113,13 @@ public class SoldierBrain : MonoBehaviour
         }
 
         killfeed.SpawnKillfeedItem(killerUsername, myUsername);
-        playerManager.PlayerDied();
+        playerManager.PlayerDied(stats.index, fromIndex);
     }
 
-
+    public bool getGameOver()
+    {
+        return playerManager.GameOver;
+    }
 
     
 

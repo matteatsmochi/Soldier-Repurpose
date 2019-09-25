@@ -6,7 +6,9 @@ using Com.LuisPedroFonseca.ProCamera2D;
 public class cameraController : MonoBehaviour
 {
     public GameObject focus;
-    
+    bool followingFocus = false;
+    int currentPlayerIndex;
+
     public GameObject CameramanSW;
     public GameObject CameramanC;
     public GameObject CameramanMain;
@@ -45,9 +47,14 @@ public class cameraController : MonoBehaviour
             approved = true;
         }
 
-        if (focus)
+        if (followingFocus && focus)
         {
             CameramanMain.transform.position = focus.transform.position;
+        }
+        else if (followingFocus && !focus)
+        {
+            approved = true;
+            ChangeFocus();
         }
 
 
@@ -81,16 +88,22 @@ public class cameraController : MonoBehaviour
         LookAtPlane();
         yield return new WaitForSeconds(10);
         LookAwayFromPlane();
-        ForceChangeFocus(players.players[0].soldier);
-
+        int openingPlayer = Mathf.Clamp(1, 0, players.players.Count - 1);
+        followingFocus = true;
+        ForceChangeFocus(players.players[openingPlayer].soldier, players.players[openingPlayer].username, players.players[openingPlayer].userID, players.players[openingPlayer].index);
+        ChangeFocus();
         LookAtObject(CameramanMain);
     }
 
-    void ChangeFocus()
+    public void ChangeFocus()
     {
         if (approved)
         {
-            focus = players.HighestScore();
+            int newIndex = players.HighestScore();
+            focus = players.players[newIndex].soldier;
+            Debug.Log(players.players[newIndex].username+ ": " + players.players[newIndex].score);
+            hud.NewPlayerHUD(players.players[newIndex].username, players.players[newIndex].userID, players.players[newIndex].kills, players.players[newIndex].index);
+            currentPlayerIndex = players.players[newIndex].index;
         }
         StartCoroutine(ChangeFocusWait());
     }
@@ -101,11 +114,30 @@ public class cameraController : MonoBehaviour
         ChangeFocus();
     }
 
-    public void ForceChangeFocus(GameObject player)
+    public void ForceChangeFocus(GameObject player, string username, string userID, int index)
     {
-        StopCoroutine(ChangeFocusWait());
         clear = -10f;
         focus = player;
-        StartCoroutine(ChangeFocusWait());
+        Debug.Log(username + ": " + players.players[index].score);
+        hud.NewPlayerHUD(username, userID, players.players[index].kills, index);
+        currentPlayerIndex = index;
+        approved = false;
+    }
+
+    public void PlayerDiedCheckCurrent(int deadIndex, int killerIndex)
+    {
+        if (deadIndex == currentPlayerIndex)
+        {
+            if (killerIndex < 101) //they are not the zone
+            {
+                //if player that died is being spectated, look at who killed them
+                ForceChangeFocus(players.players[killerIndex].soldier, players.players[killerIndex].username, players.players[killerIndex].userID, players.players[killerIndex].index);
+            }
+            else
+            {
+                //zone killed focus, change
+                ChangeFocus();
+            }
+        }
     }
 }

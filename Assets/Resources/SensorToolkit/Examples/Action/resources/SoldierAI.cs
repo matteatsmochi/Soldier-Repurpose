@@ -124,7 +124,7 @@ namespace SensorToolkit.Example
             while (countdown > 0f)
             {
                 // Make way to the current destination
-                if (dest == null)
+                if (!dest)
                 {
                     dest = NewDest();
                 }
@@ -133,7 +133,7 @@ namespace SensorToolkit.Example
                 {
                     dest = NewDest();
                 }
-                
+
                 var targetDirection = SteerSensor.GetSteeredDirection(dest.transform.position - transform.position).normalized;
                 movement.Move = targetDirection;
                 movement.Face = targetDirection;

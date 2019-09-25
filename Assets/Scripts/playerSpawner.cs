@@ -14,12 +14,15 @@ public class playerSpawner : MonoBehaviour
 
     bool aboveGround = false;
 
+    public AlivePlayerCount aliveCount;
+
 
     void Awake()
     {
         playerManager = GameObject.Find("Player Manager");
         players = playerManager.GetComponent<Players>();
         playersList = playerManager.GetComponent<PlayersList>();
+        aliveCount = GameObject.Find("Alive").GetComponent<AlivePlayerCount>();
     }
 
     void Start()
@@ -48,6 +51,7 @@ public class playerSpawner : MonoBehaviour
 
                 players.players.Add(stats);
                 players.AlivePlayers++;
+                aliveCount.SetPlayerCount(players.AlivePlayers.ToString());
 
                 SoldierBrain brain = soldier.GetComponent<SoldierBrain>();
                 brain.stats.username = stats.username;

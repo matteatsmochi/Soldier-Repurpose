@@ -10,6 +10,8 @@ public class WaypointManager : MonoBehaviour
     public Vector3 zoneCenter;
     bool zoneExists = false;
     float wait = 2f;
+
+    public GameObject zoneCenterGO;
     
     void Start()
     {
@@ -30,13 +32,30 @@ public class WaypointManager : MonoBehaviour
     public wp NextDest(float curVal)
     {
         wp temp = new wp();
-        
-        
+        int finiteLoops = 0;
+
+    badPoint:
         int rnd = Random.Range(0, waypoints.Count);
+
         if (waypoints[rnd] && waypoints[rnd].GetComponent<WaypointValue>().Val(zoneCenter) > curVal)
         {
             temp.waypoint = waypoints[rnd];
             temp.value = waypoints[rnd].GetComponent<WaypointValue>().Val(zoneCenter);
+        }
+        else
+        {
+            if (finiteLoops > 20)
+            {
+                Debug.Log("Way Too Many Loops");
+                temp.waypoint = zoneCenterGO;
+                temp.value = 100;
+            }
+            else
+            {
+                finiteLoops++;
+                goto badPoint;
+            }
+            
         }
         
         return temp;
@@ -72,6 +91,8 @@ public class WaypointManager : MonoBehaviour
                 wh.p = zonePos;
                 wh.r = zoneRadius;
             }
+
+            zoneCenterGO.transform.position = zonePos;
             
         }
         else
